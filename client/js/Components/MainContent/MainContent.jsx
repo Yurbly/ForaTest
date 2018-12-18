@@ -5,19 +5,19 @@ const styles = require('./MainContent.less');
 
 
 export const mapDispatchToProps = (dispatch) => ({
-    uploadTodos: (todos) =>
+    uploadMessages: (messages) =>
         dispatch({
-            type: 'GET_ALL',
-            todos
+            type: 'UPLOAD_MESSAGES',
+            messages
         })
 });
 
 const MainContent = (props) => {
 
-    getAll().then((request) => {
-        props.uploadTodos(request.data)
-    }).catch((err) => console.log(err));
-
+    // getAll().then((request) => {
+    //     props.uploadTodos(request.data)
+    // }).catch((err) => console.log(err));
+    props.uploadMessages([{message: 'AAAAAAAAAAAAA!'}]);
 
     return (
         <div className={styles.mainContent}>

@@ -4,12 +4,13 @@ const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
 
-const sourceRoot = './client/';
+const sourceRoot = './client/js/';
+const publicPath = './client/public/';
 module.exports = {
     target: "web",
     context: __dirname,
     mode: "development", //todo webpack mode
-    entry: path.resolve(__dirname, "./client/index.js"),
+    entry: path.resolve(__dirname, sourceRoot,"./index.js"),
     output: {
         path: path.resolve(__dirname, "/dist"),
         filename: "bundle.js",
@@ -61,7 +62,7 @@ module.exports = {
         publicPath: "/dist/assets/",  // relative path converts to localhost:9000/ + publicPath (for bundled files)
         hot: true,
         port: 9000,
-        contentBase: path.resolve(__dirname, sourceRoot),
+        contentBase: path.resolve(__dirname, publicPath),
         compress: true,
         proxy: {
             '/fora': 'http://localhost:9001'
@@ -73,7 +74,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: `${sourceRoot}/index.html`,
+            template: `${publicPath}/index.html`,
             inject: "body"
         }),
         new webpack.HotModuleReplacementPlugin()
