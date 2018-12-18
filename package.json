@@ -1,0 +1,30 @@
+{
+  "name": "foratest",
+  "version": "1.0.0",
+  "description": "Chat service with video streaming posibilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "server": "nodemon ./server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yurbly/ForaTest.git"
+  },
+  "author": "Iurii Novikov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yurbly/ForaTest/issues"
+  },
+  "homepage": "https://github.com/Yurbly/ForaTest#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "socket.io": "^2.2.0",
+    "webpack": "^4.27.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
