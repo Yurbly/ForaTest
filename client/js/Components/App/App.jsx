@@ -13,13 +13,18 @@ class App extends React.PureComponent {
     constructor() {
         super();
         this.state = {
-            endpoint: "http://localhost:9001" // this is where we are connecting to with sockets todo setup with config
+            endpoint: "http://localhost:9001",
+            color: 'white'
         }
     }
 
     send = () => {
         const socket = socketIOClient(this.state.endpoint);
-        socket.emit('change color', 'red');
+        socket.emit('change color', this.state.color);
+    };
+
+    setColor = (color) => {
+        this.setState({ color })
     };
 
 
@@ -35,7 +40,11 @@ class App extends React.PureComponent {
             <Provider store={store}>
                 <div className={styles.app}>
                     <MainContent/>
-                    <button onClick={() => this.send()}>Change Color</button>
+                    <div className={styles.buttons}>
+                        <button onClick={() => this.send()}>Change Color</button>
+                        <button id="blue" onClick={() => this.setColor('blue')}>Blue</button>
+                        <button id="red" onClick={() => this.setColor('red')}>Red</button>
+                    </div>
                 </div>
             </Provider>
         );
