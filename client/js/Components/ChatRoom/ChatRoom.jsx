@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {getAll} from '../../api/Api';
-const styles = require('./ChatRoom.less');
-
+import styles from './ChatRoom.less';
+import Header from '../Header/Header';
+import MessageContainer from '../MessageContainer/MessageContainer';
+import InputPanel from '../InputPanel/InputPanel';
 
 export const mapDispatchToProps = (dispatch) => ({
     uploadTodos: (todos) =>
@@ -14,14 +15,11 @@ export const mapDispatchToProps = (dispatch) => ({
 
 const ChatRoom = (props) => {
 
-    getAll().then((request) => {
-        props.uploadTodos(request.data)
-    }).catch((err) => console.log(err));
-
-
     return (
         <div className={styles.mainContent}>
-            Test
+            <Header />
+            <MessageContainer />
+            <InputPanel />
         </div>
     );
 };

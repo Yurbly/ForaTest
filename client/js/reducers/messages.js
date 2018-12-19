@@ -2,7 +2,7 @@ const UPLOAD_MESSAGES = 'UPLOAD_MESSAGES';
 
 const defaultState = [];
 
-const message = (state = defaultState, action) => {
+const messages = (state = defaultState, action) => {
     switch(action.type) {
         case UPLOAD_MESSAGES:
             return {
@@ -15,4 +15,4 @@ const message = (state = defaultState, action) => {
     }
 };
 
-export default message;
+export default messages;
