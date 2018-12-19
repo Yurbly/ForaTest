@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const REST_API_URL = '/todos/';
+export const REST_API_URL = '/fora/';
 
 export const HTTP_STATUS_CODE_OK = 200;
 export const HTTP_STATUS_CODE_NOT_ACCEPTABLE = 406;

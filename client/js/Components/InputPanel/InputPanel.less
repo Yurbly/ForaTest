@@ -1,10 +1,24 @@
 .inputPanel {
-    white-space: normal;
-    vertical-align: middle;
-    text-align: left;
-    width: 95%;
-    margin: 40px 0 0 0;
+  width: 100%;
   display:flex;
-  flex-direction: column;
-  align-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: #ad8e13;
+  padding: 10px 10px 10px 20px;
+}
+
+.textField {
+  width: 95%;
+  margin: 0;
+}
+
+.icon {
+  position: relative;
+  height: 100%;
+}
+
+.icon:before {
+  display: block;
+  padding-top: 100%;
 }

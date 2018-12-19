@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import Message from './Message/Message';
-const styles = require('./MessageContainer.less');
+import classNames from 'classNames';
+import styles from './MessageContainer.less';
 
 
 export const mapStateToProps = (state) => ({
-    messages: state.messages
+    messages: state.messages,
+    user:state.user
 });
 
 
@@ -14,11 +16,11 @@ class MessageContainer extends React.PureComponent{
 
     render() {
         return (
-            <div className={styles.mainContent}>
+            <div className={styles.messageContainer}>
                 {
                     this.props.messages.messages ?
                     this.props.messages.messages.map((message) =>
-                        <div key={message.date + message.text} className={styles.messageWrapper}>
+                        <div key={message.date + message.text} className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user.name === message.author})}>
                             <Message message={message}/>
                         </div>
                         ) :

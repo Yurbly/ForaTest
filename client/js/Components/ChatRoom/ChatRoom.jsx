@@ -16,7 +16,7 @@ export const mapDispatchToProps = (dispatch) => ({
 const ChatRoom = (props) => {
 
     return (
-        <div className={styles.mainContent}>
+        <div className={styles.messageContainer}>
             <Header />
             <MessageContainer />
             <InputPanel />
