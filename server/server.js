@@ -1,18 +1,21 @@
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
-const path = require('path');
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
 
-DIST_DIR = path.join(__dirname, 'dist');
+DIST_DIR = 'client/dist/';
 
-const port = process.env.PORT || 9001;
+const port =  9001;
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(DIST_DIR));
+app.use(express.static('client/dist/'));
+app.set('views', 'client/dist/');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 
 const server = http.createServer(app);
 
@@ -24,9 +27,6 @@ const roomTemplate = {
   messages:[],
   users:[]
 };
-
-app.get('/fora/', function(req, res) {
-});
 
 io.on('connection', socket => {
     console.log('Connection!!!');
@@ -67,9 +67,15 @@ io.on('connection', socket => {
 
 
 
-app.get('/:roomId', (req, res) => {
+app.get('/chat/', (req, res) => {
+    console.log('get worked!!');
+    res.render('index.html');
+});
+
+app.get('/chat/:roomId', (req, res) => {
+    console.log('get worked!!');
     const roomId = req.params.roomId;
-    res.render('example2-client.ejs', {layout:false});
+    res.render('index.html');
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

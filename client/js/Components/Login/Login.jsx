@@ -37,11 +37,6 @@ class Login extends React.Component {
         this.socket.on('connect', () => {
             console.log('Connected');
         });
-
-        // this.socket.on('joined', (roomId) => {
-        //     // console.log(roomId);
-        //     console.log('joined!!!');
-        // });
     }
 
     handleChange = (event) => {
@@ -62,7 +57,7 @@ class Login extends React.Component {
 
     render() {
         if (this.state.roomId) {
-            return <Redirect to={`/chat/?${this.state.roomId}`}/>
+            return <Redirect to={`/chat/?roomId=${this.state.roomId}`}/>
         }
         return (
                 <div className={styles.entrance}>

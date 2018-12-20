@@ -14,7 +14,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "client/dist"),
         filename: "bundle.js",
-        publicPath: "/dist/assets/"  //prefixes publicPath with 'localhost:9000/'
+        publicPath: "/"  //prefixes publicPath with 'localhost:9000/'
         /*This is an important option when using on-demand-loading or loading
         external resources like images, files, etc. If an incorrect value is
         specified you'll receive 404 errors while loading these resources.
@@ -74,7 +74,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: `${publicPath}/index.html`,
+            template: `${publicPath}/template.html`,
             inject: "body"
         }),
         new webpack.HotModuleReplacementPlugin()

@@ -6,6 +6,7 @@ import {ENDPOINT} from "../../common/constants";
 import Header from '../Header/Header';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputPanel from '../InputPanel/InputPanel';
+import * as querystring from "querystring";
 const styles = require('./ChatRoom.less');
 
 
@@ -23,7 +24,8 @@ class ChatRoom extends React.Component {
         super(props);
         this.socket = socketIOClient(ENDPOINT, {'force new connection': true});
         this.socket.on('connect', () => {
-            this.socket.emit('join', props.location.search.slice(1));
+            const rootId = querystring(props.location.search)['?rootId'];
+            this.socket.emit('join', rootId);
         });
         this.socket.on('joined', (roomInfo) => {
             props.setRoom(roomInfo);
