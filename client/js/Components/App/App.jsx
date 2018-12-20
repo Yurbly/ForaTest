@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {Provider} from 'react-redux';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import MainContent from "../MainContent/MainContent";
 import configureStore from '../../reducers/configureStore';
-import socketIOClient from 'socket.io-client';
+import Login from '../Login/Login';
 
 const styles = require('./App.less');
 
@@ -10,13 +11,18 @@ const store = configureStore();
 
 const App = () => {
 
-        return (
-            <Provider store={store}>
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
                 <div className={styles.app}>
-                    <MainContent/>
+                    <Switch>
+                        <Route exact path='/' component={Login}/>
+                        <Route path='/chat' component={MainContent}/>
+                    </Switch>
                 </div>
-            </Provider>
-        );
+            </BrowserRouter>
+        </Provider>
+    );
 };
 
 export default App;

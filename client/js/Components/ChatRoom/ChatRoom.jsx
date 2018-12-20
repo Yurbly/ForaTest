@@ -3,26 +3,19 @@ import styles from './ChatRoom.less';
 import Header from '../Header/Header';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputPanel from '../InputPanel/InputPanel';
+import socketIOClient from "socket.io-client";
+import {ENDPOINT} from "../../common/constants";
 
-class ChatRoom extends React.Component {
+const ChatRoom = () => {
 
-    constructor() {
-        super();
-        this.state = {
-            endpoint: "http://localhost:9001",
-            color: 'white'
-        }
-    }
 
-    render() {
-        return (
-            <div className={styles.chatRoom}>
-                <Header />
-                <MessageContainer />
-                <InputPanel />
-            </div>
-        );
-    }
+    return (
+        <div className={styles.chatRoom}>
+            <Header />
+            <MessageContainer />
+            <InputPanel />
+        </div>
+    );
 };
 
 export default ChatRoom;

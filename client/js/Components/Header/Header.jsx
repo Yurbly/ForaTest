@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styles from './Header.less';
 import {connect} from 'react-redux';
+import {withRouter} from "react-router-dom";
 
 const mapStateToProps = (state) => ({
   user: state.user
@@ -15,4 +16,4 @@ const Header = (props) => {
     );
 };
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

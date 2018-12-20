@@ -6,6 +6,7 @@ import socketIOClient from "socket.io-client";
 import { ENDPOINT} from "../../common/constants";
 import { sendMessage } from "../../actionCreators/messages";
 import styles from './MessageContainer.less';
+import {withRouter} from "react-router-dom";
 
 
 export const mapStateToProps = (state) => ({
@@ -48,4 +49,4 @@ class MessageContainer extends React.PureComponent{
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageContainer));

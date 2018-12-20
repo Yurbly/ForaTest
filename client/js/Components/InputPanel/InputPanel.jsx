@@ -4,6 +4,7 @@ import Send from "@material-ui/icons/send";
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import styles from './InputPanel.less';
+import {withRouter} from "react-router-dom";
 
 
 export const mapDispatchToProps = (dispatch) => ({
@@ -61,4 +62,4 @@ class InputPanel extends React.Component {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(InputPanel);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputPanel));
