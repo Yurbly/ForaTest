@@ -2,8 +2,10 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {get} from '../../api/Api';
-const styles = require('./Login.less');
+import socketIOClient from "socket.io-client";
+import { ENDPOINT} from "../../common/constants";
+
+import styles from './Login.less';
 
 
 export const mapDispatchToProps = (dispatch) => ({
@@ -11,6 +13,11 @@ export const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: 'SET_USER',
             userName
+        }),
+    setRoomName: (roomName) =>
+        dispatch({
+            type: 'SET_ROOM_NAME',
+            roomName
         })
 });
 
@@ -25,12 +32,16 @@ class Login extends React.Component {
 
     handleChange = (event) => {
         this.setState({
-            text: event.target.value
+            name: event.target.value
         })
     };
 
     handleEnterNewChat = () => {
-      this.props.setUser(this.state.text);
+        const socket = socketIOClient(ENDPOINT);
+        socket.on('connectToRoom', (roomName) => {
+            this.props.setRoomName(roomName);
+            this.props.setUser(this.state.name);
+        });
     };
 
     render() {

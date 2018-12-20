@@ -10,20 +10,29 @@ const server = http.createServer(app);
 
 const io = socketIO(server);
 
-app.get('/', function(req, res) {
-    res.sendfile('bundle.js', 'index.html');
+let roomno = 1;
+
+app.get('/fora/', function(req, res) {
 });
 
 io.on('connection', socket => {
-    console.log('New user connected');
 
-    socket.on('change color', (color) => {
-        console.log('Color Changed to: ', color);
-        io.sockets.emit('change color', color);
+    console.log('New room connected');
+
+    if(io.nsps['/'].adapter.rooms["room-"+roomno] && io.nsps['/'].adapter.rooms["room-"+roomno].length > 1) {
+        roomno++;
+    }
+    socket.join("room-"+roomno);
+    io.sockets.in("room-"+roomno).emit('connectToRoom', roomno);
+    io.sockets.in("room-"+roomno).emit('connectToRoom', "You are in room no. "+roomno);
+
+    socket.in("room-"+roomno).on('message', (message) => {
+        console.log('Message sent: ', message);
+        io.sockets.in("room-"+roomno).emit('message', message);
     });
 
     socket.on('disconnect', () => {
-        console.log('user disconnected')
+        console.log('room disconnected')
     })
 });
 

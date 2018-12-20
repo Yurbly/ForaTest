@@ -2,6 +2,9 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import Message from './Message/Message';
 import classNames from 'classNames';
+import socketIOClient from "socket.io-client";
+import { ENDPOINT} from "../../common/constants";
+import { sendMessage } from "../../actionCreators/messages";
 import styles from './MessageContainer.less';
 
 
@@ -10,11 +13,23 @@ export const mapStateToProps = (state) => ({
     user:state.user
 });
 
+export const mapDispatchToProps = (dispatch) => ({
+    sendMessage: (message) => dispatch(sendMessage(message))
+});
+
+const socket = socketIOClient(ENDPOINT);
+
+
 
 class MessageContainer extends React.PureComponent{
 
 
     render() {
+
+        socket.on('message', (message) => {
+            this.props.sendMessage(message);
+        });
+
         return (
             <div className={styles.messageContainer}>
                 {
@@ -33,4 +48,4 @@ class MessageContainer extends React.PureComponent{
     }
 };
 
-export default connect(mapStateToProps)(MessageContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageContainer);
