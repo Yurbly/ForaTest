@@ -2,13 +2,17 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 
-const port = 9001;
+const port = process.env.PORT || 9001;
 
 const app = express();
 
 const server = http.createServer(app);
 
 const io = socketIO(server);
+
+app.get('/', function(req, res) {
+    res.sendfile('bundle.js', 'index.html');
+});
 
 io.on('connection', socket => {
     console.log('New user connected');

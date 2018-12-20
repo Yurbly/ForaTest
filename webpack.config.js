@@ -12,7 +12,7 @@ module.exports = {
     mode: "development", //todo webpack mode
     entry: path.resolve(__dirname, sourceRoot,"./index.js"),
     output: {
-        path: path.resolve(__dirname, "/dist"),
+        path: path.resolve(__dirname, "client/dist"),
         filename: "bundle.js",
         publicPath: "/dist/assets/"  //prefixes publicPath with 'localhost:9000/'
         /*This is an important option when using on-demand-loading or loading

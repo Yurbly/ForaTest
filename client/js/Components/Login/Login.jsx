@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {getAll} from '../../api/Api';
+import {get} from '../../api/Api';
 const styles = require('./Login.less');
 
 
@@ -29,6 +29,10 @@ class Login extends React.Component {
         })
     };
 
+    handleEnterNewChat = () => {
+      this.props.setUser(this.state.text);
+    };
+
     render() {
 
         return (
@@ -43,7 +47,7 @@ class Login extends React.Component {
                     multiline
                     onChange={this.handleChange}
                 />
-                <Button variant="contained">
+                <Button variant="contained" onClick={this.handleEnterNewChat}>
                     Enter new chat
                 </Button>
             </div>

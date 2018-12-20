@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {getAll} from '../../api/Api';
-import ChatRoom from '../ChatRoom/ChatRoom'
+import ChatRoom from '../ChatRoom/ChatRoom';
+import Login from '../Login/Login';
 const styles = require('./MainContent.less');
 
 
-export const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
     uploadMessages: (messages) =>
         dispatch({
             type: 'UPLOAD_MESSAGES',
@@ -18,36 +19,45 @@ export const mapDispatchToProps = (dispatch) => ({
         })
 });
 
-const MainContent = (props) => {
+const mapStateToProps = (state) => ({
+    userName: state.user.name
+});
+
+class MainContent extends React.Component {
 
     // getAll().then((request) => {
     //     props.uploadTodos(request.data)
     // }).catch((err) => console.log(err));
     // props.setUser()
+    // constructor(props) {
+    //     super(props);
+    // }
+    render() {
 
-    props.uploadMessages([
-        {
-            author: 'Drankel',
-            date: new Date(),
-            text: 'AAAAAAAAAAAAA!'
-        },
-        {
-            author: 'Shrankel',
-            date: new Date(),
-            text: 'OOOOOOOOOO!'
-        },
-        {
-            author: 'Anonymous',
-            date: new Date(),
-            text: 'Everything is under control!'
-        }
-    ]);
+        this.props.uploadMessages([
+            {
+                author: 'Drankel',
+                date: new Date(),
+                text: 'AAAAAAAAAAAAA!'
+            },
+            {
+                author: 'Shrankel',
+                date: new Date(),
+                text: 'OOOOOOOOOO!'
+            },
+            {
+                author: 'Anonymous',
+                date: new Date(),
+                text: 'Everything is under control!'
+            }
+        ]);
 
-    return (
-        <div className={styles.mainContent}>
-            <ChatRoom/>
-        </div>
-    );
-};
+        return (
+            <div className={styles.mainContent}>
+                {this.props.userName !== 'Anonymous' ? <ChatRoom /> : <Login/>}
+            </div>
+        );
+    }
+}
 
-export default connect(() => ({}),mapDispatchToProps)(MainContent);
+export default connect(mapStateToProps,mapDispatchToProps)(MainContent);
