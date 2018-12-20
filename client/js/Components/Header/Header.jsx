@@ -4,14 +4,14 @@ import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user.user
 });
 
 const Header = (props) => {
     return (
         <div className={styles.header}>
             <h2 className={styles.chatName}>Chatroom</h2>
-            <span className={styles.userName}>{props.user.name}</span>
+            <span className={styles.userName}>{props.user}</span>
         </div>
     );
 };

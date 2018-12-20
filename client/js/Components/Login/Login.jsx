@@ -14,15 +14,10 @@ const ENTER_NEW_CHAT = 'Enter new chat';
 const JOIN_THE_CHAT = 'Join the chat';
 
 export const mapDispatchToProps = (dispatch) => ({
-    setUser: (userName) =>
+    setUser: (user) =>
         dispatch({
             type: 'SET_USER',
-            userName
-        }),
-    setRoom: (roomName) =>
-        dispatch({
-            type: 'SET_ROOM_NAME',
-            roomName
+            user
         })
 });
 
@@ -34,7 +29,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            user: '',
             roomId: false,
             // fromProps: props.params.roomId
         };
@@ -51,17 +46,14 @@ class Login extends React.Component {
 
     handleChange = (event) => {
         this.setState({
-            name: event.target.value
+            user: event.target.value
         })
     };
 
     handleEnterChat = () => {
-        console.log('Handled!');
-        // this.socket.emit('join');
-        this.socket.emit('join', this.props.location.search.roomId, this.state.name);
-        this.socket.on('joined', (roomId) => {
-            console.log('joined!!!');
-            console.log(roomId);
+        this.socket.emit('create');
+        this.socket.on('created', (roomId) => {
+            this.props.setUser(this.state.user);
             this.setState({
                 roomId
             })
@@ -70,8 +62,7 @@ class Login extends React.Component {
 
     render() {
         if (this.state.roomId) {
-            // return <Redirect to={'/mainContent'} />
-            return <Redirect to={`/chat?roomId=${this.state.roomId}`}/>
+            return <Redirect to={`/chat/?${this.state.roomId}`}/>
         }
         return (
                 <div className={styles.entrance}>

@@ -1,13 +1,16 @@
-const SET_ROOM_NAME = 'SET_ROOM_NAME';
-const defaultRoomName = {roomName: 'ChatRoom'};
+const SET_ROOM = 'SET_ROOM';
+const defaultRoom = {
+    messages: [],
+    participants: []
+};
 
-const room = (state = defaultRoomName, action) => {
+const room = (state = defaultRoom, action) => {
     switch(action.type) {
 
-        case SET_ROOM_NAME:
+        case SET_ROOM:
             return {
                 ...state,
-                roomName: action.roomName
+                ...action.roomInfo
             };
 
         default:

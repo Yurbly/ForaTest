@@ -18,7 +18,12 @@ const server = http.createServer(app);
 
 const io = socketIO(server);
 
-let roomIds = [];
+const rooms = {};
+
+const roomTemplate = {
+  messages:[],
+  users:[]
+};
 
 app.get('/fora/', function(req, res) {
 });
@@ -26,21 +31,24 @@ app.get('/fora/', function(req, res) {
 io.on('connection', socket => {
     console.log('Connection!!!');
     const currentRoomId = uuid();
-    socket.on('join', (roomId, userName) => {
-        console.log('roomId', roomId);
-        console.log('userName', userName);
-        if (!roomId) {
-            roomIds.push(currentRoomId);
+    socket.on('create', () => {
+            rooms[currentRoomId]={...roomTemplate};
             socket.join(currentRoomId, () => {
-                io.emit('joined', currentRoomId);
+                io.emit('created', currentRoomId);
                 console.log('New room created: ' + currentRoomId);
             });
-        } else if (roomIds.indexOf(roomId) === -1){
+    });
+    socket.on('join', (roomId, userName) => {
+        if (!rooms[roomId]){
             io.emit('error', 'No such room');
             console.log('Error. No such room.');
         } else {
-            io.emit('addUser', userName);
-            console.log(`User ${userName} added to ${roomId} chatroom`);
+            socket.join(roomId, () => {
+                const user = userName ? userName : 'Anonymous';
+                rooms[roomId].users.push(user);
+                io.emit('joined', rooms[roomId], user);
+                console.log(`User ${user} connected to ${roomId} chatroom`);
+            });
         }
     });
     socket.on('message', (message) => {
