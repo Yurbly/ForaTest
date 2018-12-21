@@ -1,6 +1,7 @@
 const SET_ROOM = 'SET_ROOM';
 const UPLOAD_MESSAGES = 'UPLOAD_MESSAGES';
 const ADD_MESSAGE = 'ADD_MESSAGE';
+const REFRESH_PARTICIPANTS = 'REFRESH_PARTICIPANTS';
 
 const defaultRoom = {
     roomId: '',
@@ -20,6 +21,11 @@ const room = (state = defaultRoom, action) => {
             return {
                 ...state,
                 messages: [...state.messages, action.message]
+            };
+        case REFRESH_PARTICIPANTS:
+            return {
+                ...state,
+                participants: action.participants
             };
 
         default:

@@ -10,7 +10,7 @@ const styles = require('./App.less');
 const store = configureStore();
 
 const App = () => {
-
+    document.getElementById('root').style.height = '100%';
     return (
         <Provider store={store}>
             <BrowserRouter>

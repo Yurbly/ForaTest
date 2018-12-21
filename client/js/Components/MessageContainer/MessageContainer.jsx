@@ -27,8 +27,8 @@ class MessageContainer extends React.Component{
                             <Message message={message}/>
                         </div>
                         ) :
-                        <div>
-                            Loading
+                        <div className={styles.noMessages}>
+                            No messages
                         </div>
                 }
             </div>

@@ -54,6 +54,7 @@ class InputPanel extends React.Component {
                     variant="outlined"
                     multiline
                     onChange={this.handleChange}
+
                 />
                 <IconButton className={styles.icon}>
                     <Send onClick={this.sendMessage}/>

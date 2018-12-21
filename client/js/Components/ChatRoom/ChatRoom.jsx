@@ -6,6 +6,7 @@ import {ENDPOINT} from "../../common/constants";
 import Header from '../Header/Header';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputPanel from '../InputPanel/InputPanel';
+import UserContainer from '../ParticipantContainer/ParticipantContainer';
 const styles = require('./ChatRoom.less');
 
 
@@ -24,6 +25,11 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: 'SET_USER',
             user
+        }),
+    refreshParticipants: (participants) =>
+        dispatch({
+            type: 'REFRESH_PARTICIPANTS',
+            participants
         })
 });
 
@@ -51,6 +57,9 @@ class ChatRoom extends React.Component {
         this.socket.on('message', (message) => {
             props.sendMessage(message);
         });
+        this.socket.on('participantsRefresh', (participants) => {
+            props.refreshParticipants(participants);
+        });
         props.setUser(user);
     }
 
@@ -58,7 +67,10 @@ class ChatRoom extends React.Component {
         return (
             <div className={styles.chatRoom}>
                 <Header />
-                <MessageContainer socket={this.socket} />
+                <div className={styles.contentView}>
+                    <MessageContainer socket={this.socket} />
+                    <UserContainer/>
+                </div>
                 <InputPanel socket={this.socket}/>
             </div>
         );

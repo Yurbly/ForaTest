@@ -15,8 +15,8 @@ const Header = (props) => {
 
     return (
         <div className={styles.header}>
-            <h2 className={styles.chatName}>Chatroom</h2>
-            <span className={styles.userName}>{props.user}</span>
+            <h3 className={styles.chatName}>Chatroom</h3>
+            <span className={styles.userName}>{`You are logged in as ${props.user}`}</span>
         </div>
     );
 };

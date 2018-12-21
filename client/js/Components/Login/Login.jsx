@@ -48,7 +48,6 @@ class Login extends React.Component {
     handleEnterChat = () => {
         this.socket.emit('create');
         this.socket.on('created', (roomId) => {
-            console.log(this.state.user);
             this.props.setUser(this.state.user);
             this.setState({
                 roomId,
@@ -61,9 +60,9 @@ class Login extends React.Component {
             return <Redirect to={`/chat/?roomId=${this.state.roomId}`}/>
         }
         return (
-                <div className={styles.entrance}>
-                    <h2>Welcome to ChatService</h2>
-                    <h4>{this.props.location.search.roomId ? JOIN_CHAT_GREETING : NEW_CHAT_GREETING}</h4>
+                <div className={styles.login}>
+                    <h2 className={styles.greeting}>Welcome to ChatService</h2>
+                    <h4 className={styles.instruction}>{this.props.location.search.roomId ? JOIN_CHAT_GREETING : NEW_CHAT_GREETING}</h4>
                     <TextField
                         id="outlined-bare"
                         className={styles.textField}
