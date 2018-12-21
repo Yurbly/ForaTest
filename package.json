@@ -4,9 +4,12 @@
   "description": "Chat service with video streaming posibilities",
   "main": "../server/server.js",
   "scripts": {
+    "start": "node ./server/server.js",
     "test": "test",
     "server": "nodemon ./server/server.js",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "build client": "webpack",
+    "build server":
   },
   "repository": {
     "type": "git",
