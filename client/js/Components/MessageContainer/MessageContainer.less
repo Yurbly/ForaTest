@@ -1,14 +1,17 @@
 .messageContainer {
   width: 70%;
   display:flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-content: space-between;
   background: #d6ce7e;
   overflow: auto;
   flex-grow: 10;
+  justify-content: flex-start;
+  height: auto;
 }
 
 .messageWrapper {
+  min-height: min-content;
   display: flex;
 }
 
@@ -18,5 +21,4 @@
 
 .noMessages {
   text-align: center;
-  vertical-align: center;
 }

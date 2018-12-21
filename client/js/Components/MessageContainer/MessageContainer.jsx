@@ -8,7 +8,7 @@ import {withRouter} from "react-router-dom";
 
 export const mapStateToProps = (state) => ({
     messages: state.room.messages,
-    user:state.room.user
+    user:state.user
 });
 
 class MessageContainer extends React.Component{
@@ -23,7 +23,8 @@ class MessageContainer extends React.Component{
                     }).map((message) =>
                         <div
                             key={message.date + message.text}
-                            className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user === message.author})}>
+                            className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user === message.author})}
+                        >
                             <Message message={message}/>
                         </div>
                         ) :

@@ -8,8 +8,7 @@
     "test": "test",
     "server": "nodemon ./server/server.js",
     "dev": "webpack-dev-server",
-    "build client": "webpack",
-    "build server":
+    "build client": "webpack"
   },
   "repository": {
     "type": "git",

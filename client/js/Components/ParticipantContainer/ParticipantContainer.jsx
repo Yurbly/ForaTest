@@ -17,6 +17,7 @@ class ParticipantContainer extends React.Component{
         return (
             <div className={styles.wrapper}>
                 <div className={styles.participantContainer}>
+                    <h4>Participants:</h4>
                     {
                         this.props.participants.length > 1 ?
                             this.props.participants.slice().filter(participant =>
@@ -29,7 +30,7 @@ class ParticipantContainer extends React.Component{
                             </div>
                             ) :
                             <div className={styles.noUsers}>
-                                No users
+                                No participants
                             </div>
                     }
                 </div>
