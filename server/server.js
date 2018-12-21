@@ -23,16 +23,14 @@ const io = socketIO(server);
 
 const rooms = {};
 
-const roomTemplate = {
-  messages:[],
-  users:[]
-};
-
 io.on('connection', socket => {
     console.log('Connection!!!');
     socket.on('create', () => {
             const currentRoomId = uuid();
-            rooms[currentRoomId]={...roomTemplate};
+            rooms[currentRoomId]={
+                messages:[],
+                users:[]
+            };
             socket.emit('created', currentRoomId);
             console.log('New room created: ' + currentRoomId);
     });
