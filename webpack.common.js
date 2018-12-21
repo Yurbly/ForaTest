@@ -5,6 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const sourceRoot = './client/js/';
 const publicPath = './client/public/';
+
 module.exports = {
     target: "web",
     context: __dirname,
@@ -13,9 +14,6 @@ module.exports = {
         path: path.resolve(__dirname, "client/dist"),
         filename: "bundle.js",
         publicPath: "/"
-    },
-    watchOptions: {
-        ignored: /node_modules/
     },
     module:{
         rules:[

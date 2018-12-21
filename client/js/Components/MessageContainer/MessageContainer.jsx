@@ -20,7 +20,7 @@ class MessageContainer extends React.Component{
                     this.props.messages.length > 0 ?
                         this.props.messages.slice().sort((message) => {
                             return new Date(message.date) - new Date(message.date);
-                    }).map((message) =>
+                    }).reverse().map((message) =>
                         <div
                             key={message.date + message.text}
                             className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user === message.author})}

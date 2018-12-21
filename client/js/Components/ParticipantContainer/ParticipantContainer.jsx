@@ -13,7 +13,6 @@ export const mapStateToProps = (state) => ({
 class ParticipantContainer extends React.Component{
 
     render() {
-        console.log(this.props);
         return (
             <div className={styles.wrapper}>
                 <div className={styles.participantContainer}>
@@ -30,7 +29,7 @@ class ParticipantContainer extends React.Component{
                             </div>
                             ) :
                             <div className={styles.noUsers}>
-                                No participants
+                                No other participants
                             </div>
                     }
                 </div>

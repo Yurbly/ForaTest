@@ -46,15 +46,19 @@ io.on('connection', socket => {
                 console.log(`User ${user} connected to ${roomId} chatroom`);
             });
         }
+        socket.on('disconnect', () => {
+            if (rooms[roomId] && rooms[roomId].length > 0){
+                const indexToRemove = rooms[roomId].participants.indexOf(userName);
+                rooms[roomId].participants.splice(indexToRemove, 1);
+                io.sockets.in(roomId).emit('participantsRefresh', rooms[roomId].participants);
+                console.log(`Room disconnected`);
+            }
+        });
     });
     socket.on('message', (message, roomId) => {
         console.log(`To ${roomId}: ` + message.text);
         rooms[roomId].messages.push(message);
         io.to(roomId).emit('message', message);
-        // io.sockets.in(roomId).emit('message', message);
-    });
-    socket.on('disconnect', () => {
-        console.log(`Room disconnected`)
     });
 });
 

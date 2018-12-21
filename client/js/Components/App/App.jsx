@@ -10,6 +10,7 @@ const styles = require('./App.less');
 const store = configureStore();
 
 const App = () => {
+    process.env['ENDPOINT'] = 'http://localhost:9001';
     document.getElementById('root').style.height = '100%';
     return (
         <Provider store={store}>

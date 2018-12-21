@@ -3,6 +3,9 @@ const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const publicPath = './client/public/';
+const webpack = require('webpack');
+
+process.env['ENDPOINT'] = 'http://localhost:9001';
 
 module.exports = merge(common ,{
     mode: 'development',
@@ -22,5 +25,8 @@ module.exports = merge(common ,{
             rewrites: [
                 { from: /^\/$/, to: '/dist/assets/index.html' },
             ]}
-    }
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
 });

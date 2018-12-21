@@ -2,12 +2,13 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 import socketIOClient from "socket.io-client";
-import {ENDPOINT} from "../../common/constants";
+import classNames from 'classNames';
 import Header from '../Header/Header';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputPanel from '../InputPanel/InputPanel';
 import UserContainer from '../ParticipantContainer/ParticipantContainer';
 const styles = require('./ChatRoom.less');
+import Login from '../Login/Login';
 
 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,11 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
             type: 'ADD_MESSAGE',
             message: message
         }),
-    setUser: (user) =>
-        dispatch({
-            type: 'SET_USER',
-            user
-        }),
     refreshParticipants: (participants) =>
         dispatch({
             type: 'REFRESH_PARTICIPANTS',
@@ -35,43 +31,46 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
     user: state.user,
+    roomId: state.room.roomId
 });
 
 class ChatRoom extends React.Component {
 
     constructor(props) {
         super(props);
-        this.socket = socketIOClient(ENDPOINT, {'force new connection': true});
-        let roomId;
-        let user = props.user;
-        if(!user || user === 'Anonymous') {
-            user = prompt('Enter your name, please', '')
-        }
-        this.socket.on('connect', () => {
-            roomId = props.location.search.slice(8);
-            this.socket.emit('join', roomId, user);
-        });
-        this.socket.on('joined', (roomInfo) => {
-            props.setRoom({...roomInfo, roomId});
-        });
-        this.socket.on('message', (message) => {
-            props.sendMessage(message);
-        });
-        this.socket.on('participantsRefresh', (participants) => {
-            props.refreshParticipants(participants);
-        });
-        props.setUser(user);
+        this.socket = socketIOClient(process.env.ENDPOINT, {'force new connection': true});
+            let roomId;
+            this.socket.on('connect', () => {
+                roomId = props.location.search.slice(8);
+                this.socket.emit('join', roomId, props.user);
+            });
+            this.socket.on('joined', (roomInfo) => {
+                props.setRoom({...roomInfo, roomId});
+            });
+            this.socket.on('message', (message) => {
+                props.sendMessage(message);
+            });
+            this.socket.on('participantsRefresh', (participants) => {
+                props.refreshParticipants(participants);
+            });
     }
 
+
     render() {
+        const isUserAnonymous = !this.props.user || this.props.user === 'Anonymous';
         return (
-            <div className={styles.chatRoom}>
-                <Header />
-                <div className={styles.contentView}>
-                    <MessageContainer socket={this.socket} />
-                    <UserContainer/>
+            <div className={classNames({[styles.loginRoomWrapper]:isUserAnonymous, [styles.chatRoomWrapper]: !isUserAnonymous})}>
+            {isUserAnonymous ?
+                <Login roomId={this.props.roomId}/> :
+                <div className={styles.chatRoom}>
+                    <Header />
+                    <div className={styles.contentView}>
+                        <MessageContainer socket={this.socket} />
+                        <UserContainer/>
+                    </div>
+                    <InputPanel socket={this.socket}/>
                 </div>
-                <InputPanel socket={this.socket}/>
+            }
             </div>
         );
     }

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import socketIOClient from "socket.io-client";
-import { ENDPOINT } from "../../common/constants";
 
 import styles from './Login.less';
 import {Redirect, withRouter} from "react-router-dom";
@@ -21,22 +20,15 @@ export const mapDispatchToProps = (dispatch) => ({
         })
 });
 
-
-
-
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             user: '',
-            roomId: false,
-            // fromProps: props.params.roomId
+            roomId: ''
         };
-        this.socket = socketIOClient(ENDPOINT, {'force new connection': true});
-        this.socket.on('connect', () => {
-            console.log('Connected');
-        });
+        this.socket = socketIOClient(process.env.ENDPOINT, {'force new connection': true});
     }
 
     handleChange = (event) => {
@@ -45,13 +37,19 @@ class Login extends React.Component {
         })
     };
 
-    handleEnterChat = () => {
+    handleCreateChat = () => {
         this.socket.emit('create');
         this.socket.on('created', (roomId) => {
             this.props.setUser(this.state.user);
             this.setState({
-                roomId,
-            })
+                roomId
+            });
+        });
+    };
+    handleJoinChat = () => {
+        this.props.setUser(this.state.user);
+        this.setState({
+            roomId: this.props.roomId
         });
     };
 
@@ -59,10 +57,11 @@ class Login extends React.Component {
         if (this.state.roomId) {
             return <Redirect to={`/chat/?roomId=${this.state.roomId}`}/>
         }
+        const roomId = this.props.roomId;
         return (
                 <div className={styles.login}>
                     <h2 className={styles.greeting}>Welcome to ChatService</h2>
-                    <h4 className={styles.instruction}>{this.props.location.search.roomId ? JOIN_CHAT_GREETING : NEW_CHAT_GREETING}</h4>
+                    <h4 className={styles.instruction}>{roomId ? JOIN_CHAT_GREETING : NEW_CHAT_GREETING}</h4>
                     <TextField
                         id="outlined-bare"
                         className={styles.textField}
@@ -71,8 +70,8 @@ class Login extends React.Component {
                         multiline
                         onChange={this.handleChange}
                     />
-                    <Button variant="contained" onClick={this.handleEnterChat}>
-                        {this.props.location.search.roomId ? JOIN_THE_CHAT : ENTER_NEW_CHAT}
+                    <Button variant="contained" onClick={roomId ? this.handleJoinChat : this.handleCreateChat}>
+                        {roomId ? JOIN_THE_CHAT : ENTER_NEW_CHAT}
                     </Button>
                 </div>
         );
