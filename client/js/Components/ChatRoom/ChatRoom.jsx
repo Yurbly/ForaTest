@@ -19,11 +19,16 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch({
             type: 'ADD_MESSAGE',
             message: message
+        }),
+    setUser: (user) =>
+        dispatch({
+            type: 'SET_USER',
+            user
         })
 });
 
 const mapStateToProps = (state) => ({
-    user: state.user.user,
+    user: state.user,
 });
 
 class ChatRoom extends React.Component {
@@ -32,10 +37,13 @@ class ChatRoom extends React.Component {
         super(props);
         this.socket = socketIOClient(ENDPOINT, {'force new connection': true});
         let roomId;
+        let user = props.user;
+        if(!user || user === 'Anonymous') {
+            user = prompt('Enter your name, please', '')
+        }
         this.socket.on('connect', () => {
             roomId = props.location.search.slice(8);
-            console.log(roomId);
-            this.socket.emit('join', roomId, props.user);
+            this.socket.emit('join', roomId, user);
         });
         this.socket.on('joined', (roomInfo) => {
             props.setRoom({...roomInfo, roomId});
@@ -43,6 +51,7 @@ class ChatRoom extends React.Component {
         this.socket.on('message', (message) => {
             props.sendMessage(message);
         });
+        props.setUser(user);
     }
 
     render() {

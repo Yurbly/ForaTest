@@ -33,31 +33,29 @@ io.on('connection', socket => {
     socket.on('create', () => {
             const currentRoomId = uuid();
             rooms[currentRoomId]={...roomTemplate};
-            io.emit('created', currentRoomId);
+            socket.emit('created', currentRoomId);
             console.log('New room created: ' + currentRoomId);
     });
     socket.on('join', (roomId, userName) => {
         console.log(userName);
         if (!rooms[roomId]){
-            io.emit('error', 'No such room');
+            socket.emit('error', 'No such room');
             console.log('Error. No such room.');
         } else {
             socket.join(roomId, () => {
+                console.log(rooms);
                 const user = userName ? userName : 'Anonymous';
                 rooms[roomId].users.push(user);
-                io.emit('joined', rooms[roomId], user);
+                socket.emit('joined', rooms[roomId], user);
                 console.log(`User ${user} connected to ${roomId} chatroom`);
             });
         }
     });
-    socket.on('message', (message) => {
-        // io.sockets.to(currentRoomId).emit('messageText', messageText);
-    });
     socket.on('message', (message, roomId) => {
-        console.log(`To ${roomId}: ` + message);
+        console.log(`To ${roomId}: ` + message.text);
         console.log('Message sent: ', message.text);
         rooms[roomId].messages.push(message);
-        io.emit('message', message);
+        io.to(roomId).emit('message', message);
         // io.sockets.in(roomId).emit('message', message);
     });
     socket.on('disconnect', () => {
@@ -65,20 +63,8 @@ io.on('connection', socket => {
     });
 });
 
-
-
-
-app.get('/chat/', (req, res) => {
-    res.render('index.html');
-});
-
-app.get('/chat/:roomId', (req, res) => {
-    console.log('get with id worked!!');
-    if (rooms.indexOf(roomId) === -1){
-        res.status(404).send('<h1>Sorry! No such chatroom!</h1>')
-    } else {
+app.get('*', (req, res) => {
         res.render('index.html');
-    }
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

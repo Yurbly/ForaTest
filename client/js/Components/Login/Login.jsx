@@ -48,9 +48,10 @@ class Login extends React.Component {
     handleEnterChat = () => {
         this.socket.emit('create');
         this.socket.on('created', (roomId) => {
+            console.log(this.state.user);
             this.props.setUser(this.state.user);
             this.setState({
-                roomId
+                roomId,
             })
         });
     };
