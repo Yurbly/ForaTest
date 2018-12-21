@@ -30,13 +30,14 @@ const roomTemplate = {
 
 io.on('connection', socket => {
     console.log('Connection!!!');
-    const currentRoomId = uuid();
     socket.on('create', () => {
+            const currentRoomId = uuid();
             rooms[currentRoomId]={...roomTemplate};
             io.emit('created', currentRoomId);
             console.log('New room created: ' + currentRoomId);
     });
     socket.on('join', (roomId, userName) => {
+        console.log(userName);
         if (!rooms[roomId]){
             io.emit('error', 'No such room');
             console.log('Error. No such room.');
@@ -60,7 +61,7 @@ io.on('connection', socket => {
         // io.sockets.in(roomId).emit('message', message);
     });
     socket.on('disconnect', () => {
-        console.log(`Room ${currentRoomId} disconnected`)
+        console.log(`Room disconnected`)
     });
 });
 

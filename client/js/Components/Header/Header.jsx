@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 
 const mapStateToProps = (state) => ({
-  user: state.user.user
+  user: state.user
 });
 
 const Header = (props) => {

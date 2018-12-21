@@ -23,7 +23,7 @@ class InputPanel extends React.Component {
     sendMessage = () => {
 
         const message = {
-            author: this.props.user.name,
+            author: this.props.user,
             text: this.state.messageText,
             date: new Date()
         };

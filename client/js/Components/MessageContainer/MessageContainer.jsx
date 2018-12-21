@@ -11,7 +11,7 @@ export const mapStateToProps = (state) => ({
     user:state.room.user
 });
 
-class MessageContainer extends React.PureComponent{
+class MessageContainer extends React.Component{
 
     render() {
         return (

@@ -1,15 +1,11 @@
 const SET_USER = 'SET_USER';
-const defaultUser = {name: 'Anonymous'};
+const defaultUser = 'Anonymous';
 
 const user = (state = defaultUser, action) => {
     switch(action.type) {
 
         case SET_USER:
-            return {
-                ...state,
-                user: action.user
-            };
-
+            return action.user;
         default:
             return state;
     }

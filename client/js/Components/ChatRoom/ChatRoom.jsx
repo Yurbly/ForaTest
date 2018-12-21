@@ -22,6 +22,10 @@ const mapDispatchToProps = (dispatch) => ({
         })
 });
 
+const mapStateToProps = (state) => ({
+    user: state.user.user,
+});
+
 class ChatRoom extends React.Component {
 
     constructor(props) {
@@ -30,7 +34,8 @@ class ChatRoom extends React.Component {
         let roomId;
         this.socket.on('connect', () => {
             roomId = props.location.search.slice(8);
-            this.socket.emit('join', roomId);
+            console.log(roomId);
+            this.socket.emit('join', roomId, props.user);
         });
         this.socket.on('joined', (roomInfo) => {
             props.setRoom({...roomInfo, roomId});
@@ -51,4 +56,4 @@ class ChatRoom extends React.Component {
     }
 }
 
-export default withRouter(connect(() => ({}),mapDispatchToProps)(ChatRoom));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ChatRoom));
