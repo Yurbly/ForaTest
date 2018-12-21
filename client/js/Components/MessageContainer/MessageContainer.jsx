@@ -2,7 +2,6 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import Message from './Message/Message';
 import classNames from 'classNames';
-import { sendMessage } from "../../actionCreators/messages";
 import styles from './MessageContainer.less';
 import {withRouter} from "react-router-dom";
 
@@ -12,26 +11,19 @@ export const mapStateToProps = (state) => ({
     user:state.room.user
 });
 
-export const mapDispatchToProps = (dispatch) => ({
-    sendMessage: (message) => dispatch(sendMessage(message))
-});
-
-
-
-
 class MessageContainer extends React.PureComponent{
 
-
     render() {
-
         return (
             <div className={styles.messageContainer}>
                 {
-                    this.props.messages.messages ?
-                    this.props.messages.messages.map((message) =>
+                    this.props.messages.length > 0 ?
+                        this.props.messages.slice().sort((message) => {
+                            return new Date(message.date) - new Date(message.date);
+                    }).map((message) =>
                         <div
                             key={message.date + message.text}
-                            className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user.name === message.author})}>
+                            className={classNames({[styles.messageWrapper]:true, [styles.right]: this.props.user === message.author})}>
                             <Message message={message}/>
                         </div>
                         ) :
@@ -44,4 +36,4 @@ class MessageContainer extends React.PureComponent{
     }
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageContainer));
+export default withRouter(connect(mapStateToProps)(MessageContainer));

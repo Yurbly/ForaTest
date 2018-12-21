@@ -6,17 +6,9 @@ import IconButton from '@material-ui/core/IconButton';
 import styles from './InputPanel.less';
 import {withRouter} from "react-router-dom";
 
-
-export const mapDispatchToProps = (dispatch) => ({
-    sendMessage: (message) =>
-        dispatch({
-            type: 'ADD_MESSAGE',
-            message
-        })
-});
-
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    roomId: state.room.roomId
 });
 
 class InputPanel extends React.Component {
@@ -24,22 +16,30 @@ class InputPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: ''
+            messageText: ''
         }
     }
 
     sendMessage = () => {
+
         const message = {
             author: this.props.user.name,
-            text: this.state.text,
+            text: this.state.messageText,
             date: new Date()
         };
-        this.props.sendMessage(message)
+        this.props.socket.emit('message', message, this.props.roomId);
+        this.setState({
+            messageText: ''
+        });
+        const input = document.querySelectorAll('[rows="1"]');
+        if (input && input.length >= 3){
+            (input[2]).focus();
+        }
     };
 
     handleChange = (event) => {
         this.setState({
-            text:event.target.value
+            messageText:event.target.value
         })
     };
 
@@ -48,6 +48,7 @@ class InputPanel extends React.Component {
             <div className={styles.inputPanel}>
                 <TextField
                     id="outlined-bare"
+                    value={this.state.messageText}
                     className={styles.textField}
                     margin="normal"
                     variant="outlined"
@@ -62,4 +63,4 @@ class InputPanel extends React.Component {
     }
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(InputPanel));
+export default withRouter(connect(mapStateToProps)(InputPanel));

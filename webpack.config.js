@@ -66,7 +66,11 @@ module.exports = {
         compress: true,
         proxy: {
             '/fora': 'http://localhost:9001'
-        }
+        },
+        historyApiFallback: {
+            rewrites: [
+                { from: /^\/$/, to: '/dist/assets/index.html' },
+            ]}
     }
     ,
     resolve: {

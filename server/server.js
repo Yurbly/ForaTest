@@ -33,10 +33,8 @@ io.on('connection', socket => {
     const currentRoomId = uuid();
     socket.on('create', () => {
             rooms[currentRoomId]={...roomTemplate};
-            socket.join(currentRoomId, () => {
-                io.emit('created', currentRoomId);
-                console.log('New room created: ' + currentRoomId);
-            });
+            io.emit('created', currentRoomId);
+            console.log('New room created: ' + currentRoomId);
     });
     socket.on('join', (roomId, userName) => {
         if (!rooms[roomId]){
@@ -52,12 +50,14 @@ io.on('connection', socket => {
         }
     });
     socket.on('message', (message) => {
-        console.log('To all: ' + message);
-        io.sockets.emit('message', message);
+        // io.sockets.to(currentRoomId).emit('messageText', messageText);
     });
-    socket.in(currentRoomId).on('message', (message) => {
-        console.log('Message sent: ', message);
-        io.sockets.in(currentRoomId).emit('message', message);
+    socket.on('message', (message, roomId) => {
+        console.log(`To ${roomId}: ` + message);
+        console.log('Message sent: ', message.text);
+        rooms[roomId].messages.push(message);
+        io.emit('message', message);
+        // io.sockets.in(roomId).emit('message', message);
     });
     socket.on('disconnect', () => {
         console.log(`Room ${currentRoomId} disconnected`)

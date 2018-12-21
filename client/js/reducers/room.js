@@ -1,5 +1,9 @@
 const SET_ROOM = 'SET_ROOM';
+const UPLOAD_MESSAGES = 'UPLOAD_MESSAGES';
+const ADD_MESSAGE = 'ADD_MESSAGE';
+
 const defaultRoom = {
+    roomId: '',
     messages: [],
     participants: []
 };
@@ -11,6 +15,11 @@ const room = (state = defaultRoom, action) => {
             return {
                 ...state,
                 ...action.roomInfo
+            };
+        case ADD_MESSAGE:
+            return {
+                ...state,
+                messages: [...state.messages, action.message]
             };
 
         default:
