@@ -68,14 +68,16 @@ io.on('connection', socket => {
 
 
 app.get('/chat/', (req, res) => {
-    console.log('get worked!!');
     res.render('index.html');
 });
 
 app.get('/chat/:roomId', (req, res) => {
-    console.log('get worked!!');
-    const roomId = req.params.roomId;
-    res.render('index.html');
+    console.log('get with id worked!!');
+    if (rooms.indexOf(roomId) === -1){
+        res.status(404).send('<h1>Sorry! No such chatroom!</h1>')
+    } else {
+        res.render('index.html');
+    }
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

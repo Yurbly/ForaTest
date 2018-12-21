@@ -8,10 +8,15 @@ const mapStateToProps = (state) => ({
 });
 
 const Header = (props) => {
+    console.log(props);
+    let user = props.user;
+    if(!user) {
+        user = prompt('Enter your name, please', '')
+    }
     return (
         <div className={styles.header}>
             <h2 className={styles.chatName}>Chatroom</h2>
-            <span className={styles.userName}>{props.user}</span>
+            <span className={styles.userName}>{user ? user : 'Anonymous'}</span>
         </div>
     );
 };
