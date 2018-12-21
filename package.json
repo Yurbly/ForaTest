@@ -2,11 +2,11 @@
   "name": "foratest",
   "version": "1.0.0",
   "description": "Chat service with video streaming posibilities",
-  "main": "../server/server.js",
+  "main": "./server/server.js",
   "scripts": {
-    "start": "set NODE_ENV=production node ./server/server.js",
+    "start": "set NODE_ENV=production && node ./server/server.js",
     "test": "test",
-    "devServer": "set NODE_ENV=development nodemon ./server/server.js",
+    "devServer": "set NODE_ENV=development &&  nodemon ./server/server.js",
     "dev": "webpack-dev-server --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js"
   },
