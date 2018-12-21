@@ -6,7 +6,7 @@ const uuid = require('uuid');
 
 DIST_DIR = 'client/dist/';
 
-const port =  9001;
+const port = process.env.PORT || 9001;
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));

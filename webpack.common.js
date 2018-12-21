@@ -2,27 +2,17 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const webpack = require('webpack');
 
 const sourceRoot = './client/js/';
 const publicPath = './client/public/';
 module.exports = {
     target: "web",
     context: __dirname,
-    mode: "development", //todo webpack mode
     entry: path.resolve(__dirname, sourceRoot,"./index.js"),
     output: {
         path: path.resolve(__dirname, "client/dist"),
         filename: "bundle.js",
-        publicPath: "/"  //prefixes publicPath with 'localhost:9000/'
-        /*This is an important option when using on-demand-loading or loading
-        external resources like images, files, etc. If an incorrect value is
-        specified you'll receive 404 errors while loading these resources.
-
-        This option specifies the public URL of the output directory when referenced
-        in a browser. A relative URL is resolved relative to the HTML page (or <base> tag).
-        Server-relative URLs, protocol-relative URLs or absolute URLs are also possible and sometimes required,
-        i. e. when hosting assets on a CDN.*/
+        publicPath: "/"
     },
     watchOptions: {
         ignored: /node_modules/
@@ -58,21 +48,6 @@ module.exports = {
             }
         ]
     },
-    devServer: {
-        publicPath: "/dist/assets/",  // relative path converts to localhost:9000/ + publicPath (for bundled files)
-        hot: true,
-        port: 9000,
-        contentBase: path.resolve(__dirname, publicPath),
-        compress: true,
-        proxy: {
-            '/fora': 'http://localhost:9001'
-        },
-        historyApiFallback: {
-            rewrites: [
-                { from: /^\/$/, to: '/dist/assets/index.html' },
-            ]}
-    }
-    ,
     resolve: {
         extensions: ['.js', '.jsx', '.less' ]
     },
@@ -80,8 +55,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: `${publicPath}/template.html`,
             inject: "body"
-        }),
-        new webpack.HotModuleReplacementPlugin()
+        })
     ],
     optimization: {
         minimizer: [new UglifyJsPlugin()]
