@@ -35,30 +35,31 @@ io.on('connection', socket => {
             console.log('New room created: ' + newRoomId);
     });
     socket.on('join', (roomId, userName) => {
-        if (!rooms[roomId]){
-            socket.emit('Error', 'No such room');
-            console.log('Error. No such room.');
-        } else {
-            let user = userName;
+
+        let currentUser = userName;
+        if (rooms[roomId]) {
             const nameExists = rooms[roomId].participants.indexOf(userName) !== -1;
             if(nameExists || !userName) {
-                user = user + uuid();
+                currentUser = currentUser + uuid();
             }
             socket.join(roomId, () => {
-                rooms[roomId].participants.push(user);
-                socket.emit('joined', rooms[roomId], user);
+                rooms[roomId].participants.push(currentUser);
+                socket.emit('joined', rooms[roomId], currentUser);
                 io.sockets.in(roomId).emit('participantsRefresh', rooms[roomId].participants);
-                console.log(`User ${user} joined to ${roomId} chatroom`);
+                console.log(`User ${currentUser} joined to ${roomId} chatroom`);
             });
+            socket.on('disconnect', () => {
+                if (rooms[roomId].participants.length > 0){
+                    const indexToRemove = rooms[roomId].participants.indexOf(currentUser);
+                    rooms[roomId].participants.splice(indexToRemove, 1);
+                    io.sockets.in(roomId).emit('participantsRefresh', rooms[roomId].participants);
+                    console.log(`${currentUser} disconnected`);
+                }
+            });
+        } else {
+            socket.emit('Error', 'No such room');
+            console.log('Error. No such room.');
         }
-        socket.on('disconnect', () => {
-            if (rooms[roomId] && rooms[roomId].length > 0){
-                const indexToRemove = rooms[roomId].participants.indexOf(userName);
-                rooms[roomId].participants.splice(indexToRemove, 1);
-                io.sockets.in(roomId).emit('participantsRefresh', rooms[roomId].participants);
-                console.log(`Room disconnected`);
-            }
-        });
     });
     socket.on('message', (message, roomId) => {
         console.log(`To ${roomId}: ` + message.text);
