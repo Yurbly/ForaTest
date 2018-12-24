@@ -38,7 +38,7 @@ class ChatRoom extends React.Component {
 
     constructor(props) {
         super(props);
-        this.socket = socketIOClient(process.env.API_URL, {'force new connection': true});
+        this.socket = socketIOClient(process.env.API_URL.trim(), {'force new connection': true});
             let roomId;
             this.socket.on('connect', () => {
                 roomId = props.location.search.slice(8);
