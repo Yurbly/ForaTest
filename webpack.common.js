@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 const sourceRoot = './client/js/';
 const publicPath = './client/public/';
@@ -53,6 +54,11 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: `${publicPath}/template.html`,
             inject: "body"
+        }),
+        new webpack.DefinePlugin({
+            "process.env": {
+                "API_URL": JSON.stringify(process.env.API_URL)
+            },
         })
     ],
     optimization: {

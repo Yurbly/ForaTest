@@ -28,7 +28,7 @@ class Login extends React.Component {
             user: '',
             roomId: ''
         };
-        this.socket = socketIOClient(process.env.ENDPOINT, {'force new connection': true});
+        this.socket = socketIOClient(process.env.API_URL, {'force new connection': true});
     }
 
     handleChange = (event) => {
