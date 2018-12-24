@@ -1,5 +1,5 @@
 const SET_USER = 'SET_USER';
-const defaultUser = 'Anonymous';
+const defaultUser = '';
 
 const user = (state = defaultUser, action) => {
     switch(action.type) {
