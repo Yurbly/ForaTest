@@ -24,26 +24,31 @@ const io = socketIO(server);
 const rooms = {};
 
 io.on('connection', socket => {
+        console.log('connected');
     socket.on('create', () => {
-            const currentRoomId = uuid();
-            rooms[currentRoomId]={
+            const newRoomId = uuid();
+            rooms[newRoomId]={
                 messages:[],
                 participants:[]
             };
-            socket.emit('created', currentRoomId);
-            console.log('New room created: ' + currentRoomId);
+            socket.emit('created', newRoomId);
+            console.log('New room created: ' + newRoomId);
     });
     socket.on('join', (roomId, userName) => {
         if (!rooms[roomId]){
-            socket.send('message', 'No such room');
+            socket.emit('Error', 'No such room');
             console.log('Error. No such room.');
         } else {
+            let user = userName;
+            const nameExists = rooms[roomId].participants.indexOf(userName) !== -1;
+            if(nameExists || !userName) {
+                user = user + uuid();
+            }
             socket.join(roomId, () => {
-                const user = userName ? userName : 'Anonymous';
                 rooms[roomId].participants.push(user);
                 socket.emit('joined', rooms[roomId], user);
                 io.sockets.in(roomId).emit('participantsRefresh', rooms[roomId].participants);
-                console.log(`User ${user} connected to ${roomId} chatroom`);
+                console.log(`User ${user} joined to ${roomId} chatroom`);
             });
         }
         socket.on('disconnect', () => {
@@ -58,7 +63,7 @@ io.on('connection', socket => {
     socket.on('message', (message, roomId) => {
         console.log(`To ${roomId}: ` + message.text);
         rooms[roomId].messages.push(message);
-        io.to(roomId).emit('message', message);
+        io.sockets.in(roomId).emit('message', message);
     });
 });
 

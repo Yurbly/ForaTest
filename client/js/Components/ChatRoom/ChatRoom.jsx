@@ -12,6 +12,11 @@ import Login from '../Login/Login';
 
 
 const mapDispatchToProps = (dispatch) => ({
+    setRoomId: (roomId) =>
+        dispatch({
+            type: 'SET_ROOM_ID',
+            roomId
+        }),
     setRoom: (roomInfo) =>
         dispatch({
             type: 'SET_ROOM',
@@ -38,23 +43,28 @@ class ChatRoom extends React.Component {
 
     constructor(props) {
         super(props);
+            const roomId = props.location.search.slice(8);
+            props.setRoomId(roomId);
         this.socket = socketIOClient(process.env.API_URL.trim(), {'force new connection': true});
-            let roomId;
-            this.socket.on('connect', () => {
-                roomId = props.location.search.slice(8);
-                this.socket.emit('join', roomId, props.user);
-            });
-            this.socket.on('joined', (roomInfo) => {
-                props.setRoom({...roomInfo, roomId});
-            });
-            this.socket.on('message', (message) => {
-                props.sendMessage(message);
-            });
-            this.socket.on('participantsRefresh', (participants) => {
-                props.refreshParticipants(participants);
-            });
+        this.socket.on('connect', () => {
+            console.log('connected');
+        });
+        this.socket.on('joined', (roomInfo) => {
+            props.setRoom({...roomInfo, roomId});
+        });
+        this.socket.on('message', (message) => {
+            props.sendMessage(message);
+        });
+        this.socket.on('participantsRefresh', (participants) => {
+            props.refreshParticipants(participants);
+        });
     }
 
+    componentDidUpdate = () => {
+        if (this.props.roomId && this.props.user) {
+            this.socket.emit('join', this.props.roomId, this.props.user);
+        }
+    };
 
     render() {
         const isUserAnonymous = !this.props.user || this.props.user === 'Anonymous';
