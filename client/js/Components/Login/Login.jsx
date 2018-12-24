@@ -28,7 +28,7 @@ class Login extends React.Component {
             user: '',
             roomId: ''
         };
-        this.socket = socketIOClient(process.env.API_URL, {'force new connection': true});
+        this.socket = socketIOClient(process.env.API_URL.trim(), {'force new connection': true});
     }
 
     handleChange = (event) => {
@@ -38,6 +38,7 @@ class Login extends React.Component {
     };
 
     handleCreateChat = () => {
+        console.log('create');
         this.socket.emit('create');
         this.socket.on('created', (roomId) => {
             this.props.setUser(this.state.user);
