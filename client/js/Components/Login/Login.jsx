@@ -38,6 +38,7 @@ class Login extends React.Component {
     };
 
     handleCreateChat = () => {
+        console.log('create');
         this.socket.emit('create');
         this.socket.on('created', (roomId) => {
             this.props.setUser(this.state.user);
