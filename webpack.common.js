@@ -10,7 +10,7 @@ const publicPath = './client/public/';
 module.exports = {
     target: "web",
     context: __dirname,
-    entry: path.resolve(__dirname, sourceRoot,"./index.js"),
+    entry: ['@babel/polyfill', path.resolve(__dirname, sourceRoot,"./index.js")],
     output: {
         path: path.resolve(__dirname, "client/dist"),
         filename: "bundle.js",

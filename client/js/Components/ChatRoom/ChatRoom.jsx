@@ -6,7 +6,7 @@ import classNames from 'classNames';
 import Header from '../Header/Header';
 import MessageContainer from '../MessageContainer/MessageContainer';
 import InputPanel from '../InputPanel/InputPanel';
-import UserContainer from '../ParticipantContainer/ParticipantContainer';
+import ParticipantContainer from '../ParticipantContainer/ParticipantContainer';
 const styles = require('./ChatRoom.less');
 import Login from '../Login/Login';
 
@@ -76,7 +76,7 @@ class ChatRoom extends React.Component {
                     <Header />
                     <div className={styles.contentView}>
                         <MessageContainer socket={this.socket} />
-                        <UserContainer/>
+                        <ParticipantContainer/>
                     </div>
                     <InputPanel socket={this.socket}/>
                 </div>

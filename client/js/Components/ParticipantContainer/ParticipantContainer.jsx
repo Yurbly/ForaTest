@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import classNames from 'classNames';
-import styles from './ParticipantContainer.less';
 import {withRouter} from "react-router-dom";
+import VideoContainer from '../VideoContainer/VideoContainer';
+import styles from './ParticipantContainer.less';
 import uuid from 'uuid';
 
 export const mapStateToProps = (state) => ({
@@ -33,6 +33,7 @@ class ParticipantContainer extends React.Component{
                             </div>
                     }
                 </div>
+                <VideoContainer/>
             </div>
         );
     }
